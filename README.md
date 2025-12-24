@@ -75,7 +75,7 @@ ipo-ai-agent/
 ### Steps
 1.  **Clone the Repository**
     ```bash
-    git clone <repo-url>
+    git clone https://github.com/ak18akashrajr/ipo-analyzer-pdf.git
     cd ipo_multi_agent_analyzer
     ```
 

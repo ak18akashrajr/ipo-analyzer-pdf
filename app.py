@@ -130,6 +130,38 @@ else:
                 except Exception as e:
                     st.error(f"Error processing query: {e}")
 
+# --- NEW: Financial Charts Section ---
+if st.session_state.ingested:
+    with st.expander("📊 View Financial Trends (Charts)", expanded=False):
+        if st.button("Generate Charts"):
+            with st.spinner("Extracting trend data from document..."):
+                chart_data = st.session_state.crew.chart_agent.get_trend_data()
+                
+                if chart_data and "years" in chart_data and "data" in chart_data:
+                    import pandas as pd
+                    years = chart_data["years"]
+                    data = chart_data["data"]
+                    
+                    # 1. Revenue Chart
+                    if "Revenue" in data:
+                        st.subheader("Revenue Trend (in ₹)")
+                        df_rev = pd.DataFrame({"Year": years, "Revenue": data["Revenue"]})
+                        st.bar_chart(df_rev.set_index("Year"))
+                    
+                    # 2. Profit Chart
+                    if "Profit" in data:
+                        st.subheader("Profit (PAT) Trend (in ₹)")
+                        df_pat = pd.DataFrame({"Year": years, "Profit": data["Profit"]})
+                        st.bar_chart(df_pat.set_index("Year"), color="#00FF00") # Green for profit
+                        
+                    # 3. Net Worth Chart
+                    if "Net Worth" in data:
+                        st.subheader("Net Worth Trend (in ₹)")
+                        df_nw = pd.DataFrame({"Year": years, "Net Worth": data["Net Worth"]})
+                        st.line_chart(df_nw.set_index("Year"))
+                else:
+                    st.warning("Could not extract sufficient data for charts.")
+
 # Footer
 st.markdown("---")
 st.caption("⚠️ Disclaimer: This tool provides information based on the document provided. It is not financial advice. No 'Buy/Sell' recommendations are generated.")

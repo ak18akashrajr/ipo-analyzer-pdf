@@ -8,6 +8,8 @@ from agents.business_agent import BusinessAgent
 from agents.summary_agent import SummaryAgent
 from agents.citation_agent import CitationAgent
 
+from agents.chart_agent import ChartAgent
+
 class IPOCrew:
     def __init__(self):
         # Initialize Shared Resources
@@ -20,7 +22,9 @@ class IPOCrew:
         self.financial_agent = FinancialAgent(self.llm, self.db, self.vector_store)
         self.risk_agent = RiskAgent(self.llm, self.vector_store)
         self.business_agent = BusinessAgent(self.llm, self.vector_store)
+        self.citation_agent = CitationAgent(self.llm)
         self.summary_agent = SummaryAgent(self.llm, self.vector_store, self.db)
+        self.chart_agent = ChartAgent(self.llm, self.vector_store) # NEW
         self.citation_agent = CitationAgent(self.llm)
 
     def process_query(self, query: str) -> str:
